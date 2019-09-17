@@ -1,4 +1,7 @@
 const saveExampleDataBtn = document.getElementById("saveExampleDataBtn");
+const newClientForm = document.getElementById("newClientForm");
+const newClientSpecialist = document.getElementById("specialist");
+const newClientName = document.getElementById("name");
 
 function loadJSON(callback) {
   var xobj = new XMLHttpRequest();
@@ -19,4 +22,29 @@ function saveExampleData() {
   });
 }
 
+function addNewClient() {
+  let specialist = newClientSpecialist.value;
+  let name = newClientName.value;
+  let data = JSON.parse(window.localStorage.getItem("clients"));
+  let specialistClients = data.find(item => {
+    return item.specialist === specialist;
+  }).clients;
+  let number = specialistClients[(specialistClients.length - 1)].number + 1;
+  let newClient = {number: number, name: name};
+  specialistClients.push(newClient);
+  let updateResult = data.find((item, index) => {
+    if(item.specialist === specialist) {
+      data[index].clients = specialistClients;
+      return true;
+    }
+  });
+  window.localStorage.setItem("clients", JSON.stringify(data));
+}
+
 saveExampleDataBtn.addEventListener("click", saveExampleData);
+
+newClientForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  addNewClient();
+  newClientName.value = "";
+});

@@ -9,6 +9,18 @@
 <body>
   <h1>Manage all clients</h1>
   <button id="saveExampleDataBtn">Save example client data</button>
+  <div>
+    <h2>Add new client</h2>
+    <form id="newClientForm">
+      <select id="specialist" name="specialist">
+        <option value="Investment">Investment</option>
+        <option value="Credit">Credit</option>
+        <option value="Pension">Pension</option>
+      </select>
+      <input id="name" name="name" type="text" placeholder="Enter name">
+      <button type="submit">Submit</button>
+    </form>
+  </div>
 
   <script src="./js/main.js"></script>
   <script src="./js/admin.js"></script>
