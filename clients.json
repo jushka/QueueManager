@@ -1,0 +1,55 @@
+[
+  {
+    "specialist": "Investment",
+    "clients": [
+      {
+        "number": 1,
+        "name": "John"
+      },
+      {
+        "number": 2,
+        "name": "Paul"
+      },
+      {
+        "number": 3,
+        "name": "Bill"
+      }
+    ]
+  },
+
+  {
+    "specialist": "Credit",
+    "clients": [
+      {
+        "number": 1,
+        "name": "Bob"
+      },
+      {
+        "number": 2,
+        "name": "Dick"
+      }
+    ]
+  },
+
+  {
+    "specialist": "Pension",
+    "clients": [
+      {
+        "number": 1,
+        "name": "Anna"
+      },
+      {
+        "number": 2,
+        "name": "Leonardo"
+      },
+      {
+        "number": 3,
+        "name": "Brad"
+      },
+      {
+        "number": 4,
+        "name": "Salma"
+      }
+    ]
+  }
+]
