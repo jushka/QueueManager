@@ -47,4 +47,5 @@ newClientForm.addEventListener("submit", (event) => {
   event.preventDefault();
   addNewClient();
   newClientName.value = "";
+  newClientName.focus();
 });

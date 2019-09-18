@@ -1,11 +1,13 @@
 const specialistsDiv = document.getElementById("specialists");
+const shownClients = 3;
 
 function renderSpecialistClients(specialistName, specialistClients) {
   let specialistDiv = document.createElement("div");
   let specialistTitle = document.createElement("h2");
   specialistTitle.textContent = specialistName;
   specialistDiv.appendChild(specialistTitle);
-  specialistClients.map(client => {
+  shownSpecialistClients = specialistClients.slice(0, shownClients);
+  shownSpecialistClients.forEach(client => {
     let clientDiv = document.createElement("div");
     clientDiv.className = "client";
     let clientNumberDiv = document.createElement("div");

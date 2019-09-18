@@ -11,7 +11,7 @@ function renderSpecialistClients(specialistName, specialistClients) {
   let specialistTitle = document.createElement("h2");
   specialistTitle.textContent = specialistName;
   specialistDiv.appendChild(specialistTitle);
-  specialistClients.map(client => {
+  specialistClients.forEach(client => {
     let clientDiv = document.createElement("div");
     clientDiv.className = "client";
     let clientNumberDiv = document.createElement("div");
