@@ -1,8 +1,33 @@
 const specialistSelect = document.getElementById("specialistSelect");
 const clientsDiv = document.getElementById("clients");
+const timesBlueprint = [
+  {
+  specialist: "Investment",
+  times: [10]
+  },
+  {
+  specialist: "Credit",
+  times: [15]
+  },
+  {
+  specialist: "Pension",
+  times: [20]
+  },
+];
 
 function calcVisitTime(startTime, endTime) {
-  return (endTime - startTime) / 1000 / 60;
+  return Math.round((endTime - startTime) / 1000);
+}
+
+function addVisitTime(specialist, time) {
+  let data = JSON.parse(window.localStorage.getItem("times"));
+  let result = data.find((item, index) => {
+    if(item.specialist === specialist) {
+      data[index].times.push(time);
+      return true;
+    }
+  });
+  window.localStorage.setItem("times", JSON.stringify(data));
 }
 
 function serveClient(specialistName, clientNumber) {
@@ -13,9 +38,12 @@ function serveClient(specialistName, clientNumber) {
 
   let result1 = specialistClients.find((item, index) => {
     if(item.number === clientNumber) {
-      specialistClients[index].status = "served";
+      let client = specialistClients[index];
+      client.status = "served";
       let d = new Date();
-      specialistClients[index].endTime = d.getTime();
+      client.endTime = d.getTime();
+      let visitTime = calcVisitTime(client.startTime, client.endTime);
+      addVisitTime(specialistName, visitTime);
       return true;
     }
   });
@@ -85,3 +113,7 @@ function loadData(specialist) {
 specialistSelect.addEventListener("change", () => {
   specialistSelect.value === "" ? null : loadData(specialistSelect.value); 
 });
+
+if(window.localStorage.getItem("times") === null) {
+  window.localStorage.setItem("times", JSON.stringify(timesBlueprint));
+}
