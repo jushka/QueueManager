@@ -20,17 +20,47 @@ function saveExampleData() {
   loadJSON((response) => {
     window.localStorage.setItem("clients", response);
   });
+  window.localStorage.setItem("nextClientNumber", "10");
 }
 
 function addNewClient() {
+  if(window.localStorage.getItem("clients") === null) {
+    let blueprint = [
+      {
+      specialist: "Investment",
+      clients: []
+      },
+      {
+      specialist: "Credit",
+      clients: []
+      },
+      {
+      specialist: "Pension",
+      clients: []
+      },
+    ];
+    window.localStorage.setItem("clients", JSON.stringify(blueprint));
+  }
   let specialist = newClientSpecialist.value;
   let name = newClientName.value;
   let data = JSON.parse(window.localStorage.getItem("clients"));
   let specialistClients = data.find(item => {
     return item.specialist === specialist;
   }).clients;
-  let number = specialistClients.length > 0 ? specialistClients[(specialistClients.length - 1)].number + 1 : 1;
-  let newClient = {number: number, name: name};
+  if(window.localStorage.getItem("nextClientNumber") === null) {
+    window.localStorage.setItem("nextClientNumber", "1");
+  }
+  let number = Number(window.localStorage.getItem("nextClientNumber"));
+  window.localStorage.setItem("nextClientNumber", (number + 1).toString());
+  let d = new Date();
+  let startTime = d.getTime();
+  let newClient = {
+    number: number,
+    name: name,
+    status: "waiting",
+    startTime: startTime,
+    endTime: 0
+  };
   specialistClients.push(newClient);
   let updateResult = data.find((item, index) => {
     if(item.specialist === specialist) {

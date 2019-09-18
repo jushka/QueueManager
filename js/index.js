@@ -2,12 +2,15 @@ const specialistsDiv = document.getElementById("specialists");
 const shownClients = 3;
 
 function renderSpecialistClients(specialistName, specialistClients) {
+  let waitingClients = specialistClients.filter(client => {
+    return client.status === "waiting";
+  });
   let specialistDiv = document.createElement("div");
   let specialistTitle = document.createElement("h2");
   specialistTitle.textContent = specialistName;
   specialistDiv.appendChild(specialistTitle);
-  shownSpecialistClients = specialistClients.slice(0, shownClients);
-  shownSpecialistClients.forEach(client => {
+  shownWaitingClients = waitingClients.slice(0, shownClients);
+  shownWaitingClients.forEach(client => {
     let clientDiv = document.createElement("div");
     clientDiv.className = "client";
     let clientNumberDiv = document.createElement("div");

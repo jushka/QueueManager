@@ -4,15 +4,24 @@
     "clients": [
       {
         "number": 1,
-        "name": "John"
+        "name": "John",
+        "status": "waiting",
+        "startTime": "1568824340433",
+        "endTime": "0"
       },
       {
         "number": 2,
-        "name": "Paul"
+        "name": "Paul",
+        "status": "served",
+        "startTime": "1568824340433",
+        "endTime": "1568824431760"
       },
       {
-        "number": 3,
-        "name": "Bill"
+        "number": 8,
+        "name": "Bill",
+        "status": "waiting",
+        "startTime": "1568824340433",
+        "endTime": "0"
       }
     ]
   },
@@ -21,12 +30,18 @@
     "specialist": "Credit",
     "clients": [
       {
-        "number": 1,
-        "name": "Bob"
+        "number": 3,
+        "name": "Bob",
+        "status": "cancelled",
+        "startTime": "1568824340433",
+        "endTime": "0"
       },
       {
-        "number": 2,
-        "name": "Dick"
+        "number": 5,
+        "name": "Dick",
+        "status": "waiting",
+        "startTime": "1568824340433",
+        "endTime": "0"
       }
     ]
   },
@@ -35,20 +50,32 @@
     "specialist": "Pension",
     "clients": [
       {
-        "number": 1,
-        "name": "Anna"
-      },
-      {
-        "number": 2,
-        "name": "Leonardo"
-      },
-      {
-        "number": 3,
-        "name": "Brad"
-      },
-      {
         "number": 4,
-        "name": "Salma"
+        "name": "Anna",
+        "status": "waiting",
+        "startTime": "1568824340433",
+        "endTime": "0"
+      },
+      {
+        "number": 6,
+        "name": "Leonardo",
+        "status": "waiting",
+        "startTime": "1568824340433",
+        "endTime": "0"
+      },
+      {
+        "number": 7,
+        "name": "Brad",
+        "status": "waiting",
+        "startTime": "1568824340433",
+        "endTime": "0"
+      },
+      {
+        "number": 9,
+        "name": "Selma",
+        "status": "waiting",
+        "startTime": "1568824340433",
+        "endTime": "0"
       }
     ]
   }

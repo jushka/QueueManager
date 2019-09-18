@@ -1,6 +1,35 @@
 const specialistSelect = document.getElementById("specialistSelect");
 const clientsDiv = document.getElementById("clients");
 
+function calcVisitTime(startTime, endTime) {
+  return (endTime - startTime) / 1000 / 60;
+}
+
+function serveClient(specialistName, clientNumber) {
+  let data = JSON.parse(window.localStorage.getItem("clients"));
+  let specialistClients = data.find(item => {
+    return item.specialist === specialistName;
+  }).clients;
+
+  let result1 = specialistClients.find((item, index) => {
+    if(item.number === clientNumber) {
+      specialistClients[index].status = "served";
+      let d = new Date();
+      specialistClients[index].endTime = d.getTime();
+      return true;
+    }
+  });
+
+  let result2 = data.find((item, index) => {
+    if(item.specialist === specialistName) {
+      data[index].clients = specialistClients;
+      return true;
+    }
+  });
+  window.localStorage.setItem("clients", JSON.stringify(data));
+  loadData(specialistName);
+}
+
 function renderSpecialistClients(specialistName, specialistClients) {
   let specialistDiv = document.getElementById("specialistDiv");
   if (specialistDiv) {
@@ -24,23 +53,9 @@ function renderSpecialistClients(specialistName, specialistClients) {
     let clientNamePara = document.createElement("p");
     clientNamePara.textContent = client.name;
     let clientButton = document.createElement("button");
-    clientButton.textContent = "Serviced";
+    clientButton.textContent = "Served";
     clientButton.addEventListener("click", () => {
-      let data = JSON.parse(window.localStorage.getItem("clients"));
-      let specialistClients = data.find(item => {
-        return item.specialist === specialistName;
-      }).clients;
-      specialistClients = specialistClients.filter(item => {
-        return item.name !== client.name;
-      });
-      let updateResult = data.find((item, index) => {
-        if(item.specialist === specialistName) {
-          data[index].clients = specialistClients;
-          return true;
-        }
-      });
-      window.localStorage.setItem("clients", JSON.stringify(data));
-      loadData(specialistName);
+      serveClient(specialistName, client.number);
     });
     clientNumberDiv.appendChild(clientNumberPara);
     clientNameDiv.appendChild(clientNamePara);
@@ -54,11 +69,17 @@ function renderSpecialistClients(specialistName, specialistClients) {
 }
 
 function loadData(specialist) {
+  if(window.localStorage.getItem("clients") === null) {
+    return;
+  }
   let data = JSON.parse(window.localStorage.getItem("clients"));
   let specialistClients = data.find(item => {
     return item.specialist === specialist;
   }).clients;
-  renderSpecialistClients(specialist, specialistClients);
+  let waitingClients = specialistClients.filter(client => {
+    return client.status === "waiting";
+  });
+  renderSpecialistClients(specialist, waitingClients);
 }
 
 specialistSelect.addEventListener("change", () => {
