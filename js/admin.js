@@ -1,6 +1,6 @@
 const saveExampleDataBtn = document.getElementById("saveExampleDataBtn");
 const newClientForm = document.getElementById("newClientForm");
-const newClientSpecialist = document.getElementById("specialist");
+const newClientSpecialist = document.getElementById("specialistSelect");
 const newClientName = document.getElementById("name");
 
 function loadJSON(callback) {
@@ -29,7 +29,7 @@ function addNewClient() {
   let specialistClients = data.find(item => {
     return item.specialist === specialist;
   }).clients;
-  let number = specialistClients[(specialistClients.length - 1)].number + 1;
+  let number = specialistClients.length > 0 ? specialistClients[(specialistClients.length - 1)].number + 1 : 1;
   let newClient = {number: number, name: name};
   specialistClients.push(newClient);
   let updateResult = data.find((item, index) => {

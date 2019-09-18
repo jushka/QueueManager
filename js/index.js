@@ -1,6 +1,6 @@
 const specialistsDiv = document.getElementById("specialists");
 
-function loadSpecialistClients(specialistName, specialistClients) {
+function renderSpecialistClients(specialistName, specialistClients) {
   let specialistDiv = document.createElement("div");
   let specialistTitle = document.createElement("h2");
   specialistTitle.textContent = specialistName;
@@ -28,7 +28,7 @@ function loadSpecialistClients(specialistName, specialistClients) {
 function loadData() {
   let data = JSON.parse(window.localStorage.getItem("clients"));
   data.map(specialist => {
-    loadSpecialistClients(specialist.specialist, specialist.clients);
+    renderSpecialistClients(specialist.specialist, specialist.clients);
   });
 }
 
