@@ -1,19 +1,5 @@
 const specialistSelect = document.getElementById("specialistSelect");
 const clientsDiv = document.getElementById("clients");
-const timesBlueprint = [
-  {
-  specialist: "Investment",
-  times: [10]
-  },
-  {
-  specialist: "Credit",
-  times: [15]
-  },
-  {
-  specialist: "Pension",
-  times: [20]
-  },
-];
 
 function calcVisitTime(startTime, endTime) {
   return Math.round((endTime - startTime) / 1000);
@@ -113,7 +99,3 @@ function loadData(specialist) {
 specialistSelect.addEventListener("change", () => {
   specialistSelect.value === "" ? null : loadData(specialistSelect.value); 
 });
-
-if(window.localStorage.getItem("times") === null) {
-  window.localStorage.setItem("times", JSON.stringify(timesBlueprint));
-}
