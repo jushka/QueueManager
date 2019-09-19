@@ -1,6 +1,7 @@
 const timeLeftForm = document.getElementById("timeLeftForm");
 const clientNumber = document.getElementById("clientNumber");
 const timeLeftText = document.getElementById("timeLeftText");
+let showRemainingTimeID;
 
 function calcAverageTime(specialist) {
   let averageTime;
@@ -21,24 +22,8 @@ function calcRemainingTime(startTime, specialist) {
   return averageTime - timePassed;
 }
 
-timeLeftForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  let number = Number(clientNumber.value);
-  let data = JSON.parse(window.localStorage.getItem("clients"));
-  let found = false;
-  let remainingTime = 0;
-  data.forEach(item => {
-    item.clients.forEach(client => {
-      if(client.number === number) {
-        found = true;
-        remainingTime = Math.round(calcRemainingTime(client.startTime, item.specialist));
-      }
-    });
-  });
-  if(!found) {
-    timeLeftText.textContent = "Client not found";
-    return;
-  }
+function showRemainingTime(startTime, specialist) {
+  let remainingTime = Math.round(calcRemainingTime(startTime, specialist));
   if(remainingTime < 0) {
     timeLeftText.textContent = "You should be served soon :)"
   } else if(remainingTime > 60) {
@@ -47,5 +32,36 @@ timeLeftForm.addEventListener("submit", (event) => {
     timeLeftText.textContent = `Time remaining: ${min} min(s) and ${sec} secs`;
   } else {
     timeLeftText.textContent = `Time remaining: ${remainingTime} seconds`;
+  }
+}
+
+timeLeftForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  clearInterval(showRemainingTimeID);
+  let number = Number(clientNumber.value);
+  let data = JSON.parse(window.localStorage.getItem("clients"));
+  let found = false;
+  let startTime, specialist;
+  
+  data.forEach(item => {
+    item.clients.forEach(client => {
+      if(client.number === number) {
+        found = true;
+        startTime = client.startTime;
+        specialist = item.specialist;
+        return;
+      }
+    });
+    if(found) {return};
+  });
+
+  if(!found) {
+    timeLeftText.textContent = "Client not found";
+    return;
+  } else {
+    showRemainingTime(startTime, specialist);
+    showRemainingTimeID = setInterval(() => {
+      showRemainingTime(startTime, specialist);
+    }, 5000);
   }
 });
