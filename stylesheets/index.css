@@ -1,0 +1,25 @@
+.specialist__name {
+  background-color: black;
+  color: white;
+  margin: 0;
+  border-top: 3px solid white;
+  padding: 1rem 0;
+}
+
+.client__number, .client__name, .client__time {
+  background-color: black;
+  color: red;
+  font-size: 4rem;
+}
+
+@media(max-width: 1400px) {
+  .client__number, .client__name, .client__time {
+    font-size: 3rem;
+  }
+}
+
+@media(max-width: 650px) {
+  .client__time {
+    font-size: 2rem;
+  }
+}

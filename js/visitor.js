@@ -14,13 +14,13 @@ function showRemainingTime(client) {
     let d = new Date();
     let remainingTime = Math.round((client.expectedEndTime - d.getTime()) / 1000);
     if(remainingTime < 0) {
-      timeLeftText.textContent = "You should be served soon :)"
+      timeLeftText.textContent = "You should be served soon"
     } else if(remainingTime > 60) {
       let min = Math.round(remainingTime / 60);
       let sec = remainingTime % 60;
-      timeLeftText.textContent = `Time remaining: ${min} min(s) and ${sec} secs`;
+      timeLeftText.textContent = `Wait ${min} min(s) and ${sec} secs`;
     } else {
-      timeLeftText.textContent = `Time remaining: ${remainingTime} seconds`;
+      timeLeftText.textContent = `Wait ${remainingTime} seconds`;
     }
   }
 }

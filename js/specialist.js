@@ -63,12 +63,13 @@ function renderSpecialistClients(specialistName, specialistClients) {
   specialistDiv.id = "specialistDiv";
   let specialistTitle = document.createElement("h2");
   specialistTitle.textContent = specialistName;
+  specialistTitle.className = "text-secondary display-4 my-3";
   specialistDiv.appendChild(specialistTitle);
   specialistClients.forEach(client => {
     let clientDiv = document.createElement("div");
-    clientDiv.className = "client";
+    clientDiv.className = "border-top";
     let clientNumberDiv = document.createElement("div");
-    clientNumberDiv.className = "client__number";
+    clientNumberDiv.className = "client__number mt-2";
     let clientNameDiv = document.createElement("div");
     clientNameDiv.className = "client__name";
     let clientButtonDiv = document.createElement("div");
@@ -78,6 +79,7 @@ function renderSpecialistClients(specialistName, specialistClients) {
     clientNamePara.textContent = client.name;
     let clientButton = document.createElement("button");
     clientButton.textContent = "Served";
+    clientButton.className = "btn btn-dark mb-3 purple-btn";
     clientButton.addEventListener("click", () => {
       markClientAsServed(specialistName, client.number);
       markClientAsInService(specialistName);

@@ -1,0 +1,12 @@
+.client__number {
+  font-size: 1.5rem;
+  color: grey;
+}
+
+.client__number p {
+  margin: 0;
+}
+
+.client__name {
+  font-size: 2rem;
+}
