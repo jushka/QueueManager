@@ -1,25 +1,6 @@
 const specialistsDiv = document.getElementById("specialists");
 const shownClients = 3;
 
-function calcAverageTime(specialist) {
-  let averageTime;
-  let data = JSON.parse(window.localStorage.getItem("times"));
-  let result = data.find(item => {
-    if(item.specialist === specialist) {
-      let time = item.times.reduce((item, acc) => acc+=item);
-      averageTime = time / item.times.length; 
-    }
-  });
-  return averageTime;
-}
-
-function calcRemainingTime(startTime, specialist) {
-  let averageTime = calcAverageTime(specialist);
-  let d = new Date();
-  let timePassed = (d.getTime() - startTime) / 1000;
-  return averageTime - timePassed;
-}
-
 function renderSpecialistClients(specialistName, specialistClients) {
   let waitingClients = specialistClients.filter(client => {
     if(client.status === "waiting" || client.status === "in service") {
@@ -50,7 +31,8 @@ function renderSpecialistClients(specialistName, specialistClients) {
     if(client.status === "in service") {
       clientTimePara.textContent = "Client is being served right now";
     } else {
-      let remainingTime = Math.round(calcRemainingTime(client.startTime, specialistName));
+      let d = new Date();
+      let remainingTime = Math.round((client.expectedEndTime - d.getTime()) / 1000);
       if(remainingTime < 0) {
         clientTimePara.textContent = "You should be served soon :)"
       } else if(remainingTime > 60) {
@@ -80,15 +62,14 @@ function loadData() {
   });
 }
 
-if(window.localStorage.getItem("clients")) {
+
+loadData();
+setInterval(() => {
+  if(document.querySelectorAll(".specialist")) {
+    let items = document.querySelectorAll(".specialist");
+    items.forEach(item => {
+      specialistsDiv.removeChild(item);
+    });
+  }
   loadData();
-  setInterval(() => {
-    if(document.querySelectorAll(".specialist")) {
-      let items = document.querySelectorAll(".specialist");
-      items.forEach(item => {
-        specialistsDiv.removeChild(item);
-      });
-    }
-    loadData();
-  }, 5000);
-}
+}, 5000);

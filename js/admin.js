@@ -23,6 +23,18 @@ function saveExampleData() {
   window.localStorage.setItem("nextClientNumber", "10");
 }
 
+function calcAverageTime(specialist) {
+  let averageTime;
+  let data = JSON.parse(window.localStorage.getItem("times"));
+  let result = data.find(item => {
+    if(item.specialist === specialist) {
+      let time = item.times.reduce((acc, item) => acc + item);
+      averageTime = time / item.times.length; 
+    }
+  });
+  return averageTime;
+}
+
 function addNewClient() {
   let data = JSON.parse(window.localStorage.getItem("clients"));
   let specialist = newClientSpecialist.value;
@@ -56,6 +68,9 @@ function addNewClient() {
   // set client startTime
   let d = new Date();
   let startTime = d.getTime();
+
+  //set client expectedEndTime
+  let expectedEndTime = startTime + Math.round(calcAverageTime(specialist));
   
   // create new client
   let newClient = {
@@ -63,23 +78,12 @@ function addNewClient() {
     name: name,
     status: status,
     startTime: startTime,
-    endTime: 0
+    endTime: 0,
+    expectedEndTime: expectedEndTime
   };
 
   // push new client to client array
   data[index].clients.push(newClient);
-  
-  // let specialistClients = data.find(item => {
-  //   return item.specialist === specialist;
-  // }).clients;
-
-  // specialistClients.push(newClient);
-  // let updateResult = data.find((item, index) => {
-  //   if(item.specialist === specialist) {
-  //     data[index].clients = specialistClients;
-  //     return true;
-  //   }
-  // });
 
   window.localStorage.setItem("clients", JSON.stringify(data));
 }
@@ -92,21 +96,3 @@ newClientForm.addEventListener("submit", (event) => {
   newClientName.value = "";
   newClientName.focus();
 });
-
-if(window.localStorage.getItem("clients") === null) {
-  let blueprint = [
-    {
-    specialist: "Investment",
-    clients: []
-    },
-    {
-    specialist: "Credit",
-    clients: []
-    },
-    {
-    specialist: "Pension",
-    clients: []
-    },
-  ];
-  window.localStorage.setItem("clients", JSON.stringify(blueprint));
-}

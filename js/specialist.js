@@ -1,10 +1,6 @@
 const specialistSelect = document.getElementById("specialistSelect");
 const clientsDiv = document.getElementById("clients");
 
-function calcVisitTime(startTime, endTime) {
-  return Math.round((endTime - startTime) / 1000);
-}
-
 function addVisitTime(specialist, time) {
   let data = JSON.parse(window.localStorage.getItem("times"));
   let result = data.find((item, index) => {
@@ -26,7 +22,7 @@ function markClientAsServed(specialistName, clientNumber) {
           data[i].clients[j].status = "served";
           let d = new Date();
           data[i].clients[j].endTime = d.getTime();
-          let visitTime = calcVisitTime(data[i].clients[j].startTime, data[i].clients[j].endTime);
+          let visitTime = data[i].clients[j].endTime - data[i].clients[j].startTime;
           addVisitTime(specialistName, visitTime);
           j = data[i].clients.length;
         }
@@ -99,9 +95,6 @@ function renderSpecialistClients(specialistName, specialistClients) {
 }
 
 function loadData(specialist) {
-  if (window.localStorage.getItem("clients") === null) {
-    return;
-  }
   let data = JSON.parse(window.localStorage.getItem("clients"));
   let specialistClients = data.find(item => {
     return item.specialist === specialist;
