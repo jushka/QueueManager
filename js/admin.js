@@ -2,6 +2,29 @@ const saveExampleDataBtn = document.getElementById("saveExampleDataBtn");
 const newClientForm = document.getElementById("newClientForm");
 const newClientSpecialist = document.getElementById("specialistSelect");
 const newClientName = document.getElementById("name");
+const msgDiv = document.getElementById("msgDiv");
+
+function showMessage(alertType, alertText) {
+  if(document.getElementById("msg")) {
+    msgDiv.removeChild(document.getElementById("msg"));
+  }
+  let div = document.createElement("div");
+  div.id = "msg";
+  div.className = `alert ${alertType} alert-dismissible fade show text-center`;
+  div.setAttribute("role", "alert");
+  div.innerHTML = alertText;
+  let btn = document.createElement("button");
+  btn.setAttribute("type", "button");
+  btn.className = "close";
+  btn.setAttribute("data-dismiss", "alert");
+  btn.setAttribute("aria-label", "Close");
+  let span = document.createElement("span");
+  span.setAttribute("aria-hidden", "true");
+  span.innerHTML = "&times;";
+  btn.appendChild(span);
+  div.appendChild(btn);
+  msgDiv.appendChild(div);
+}
 
 function loadJSON(callback) {
   var xobj = new XMLHttpRequest();
@@ -10,7 +33,10 @@ function loadJSON(callback) {
   xobj.onreadystatechange = () => {
     if (xobj.readyState == 4 && xobj.status == "200") {
       // .open will NOT return a value but simply returns undefined in async mode so use a callback
+      showMessage("alert-success", "<strong>Success!</strong> Data has been saved!");
       callback(xobj.responseText);
+    } else {
+      showMessage("alert-danger", "<strong>Error!</strong> Something went wrong!");
     }
   }
   xobj.send();
@@ -86,6 +112,7 @@ function addNewClient() {
   data[index].clients.push(newClient);
 
   window.localStorage.setItem("clients", JSON.stringify(data));
+  showMessage("alert-success", "<strong>Success!</strong> New client has been added!");
 }
 
 saveExampleDataBtn.addEventListener("click", saveExampleData);
