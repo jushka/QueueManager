@@ -8,7 +8,7 @@ function calcVisitTime(startTime, endTime) {
 function addVisitTime(specialist, time) {
   let data = JSON.parse(window.localStorage.getItem("times"));
   let result = data.find((item, index) => {
-    if(item.specialist === specialist) {
+    if (item.specialist === specialist) {
       data[index].times.push(time);
       return true;
     }
@@ -16,32 +16,46 @@ function addVisitTime(specialist, time) {
   window.localStorage.setItem("times", JSON.stringify(data));
 }
 
-function serveClient(specialistName, clientNumber) {
+function markClientAsServed(specialistName, clientNumber) {
   let data = JSON.parse(window.localStorage.getItem("clients"));
-  let specialistClients = data.find(item => {
-    return item.specialist === specialistName;
-  }).clients;
 
-  let result1 = specialistClients.find((item, index) => {
-    if(item.number === clientNumber) {
-      let client = specialistClients[index];
-      client.status = "served";
-      let d = new Date();
-      client.endTime = d.getTime();
-      let visitTime = calcVisitTime(client.startTime, client.endTime);
-      addVisitTime(specialistName, visitTime);
-      return true;
+  for (let i = 0; i < data.length; i++) {
+    if (data[i].specialist === specialistName) {
+      for (let j = 0; j < data[i].clients.length; j++) {
+        if (data[i].clients[j].number === clientNumber) {
+          data[i].clients[j].status = "served";
+          let d = new Date();
+          data[i].clients[j].endTime = d.getTime();
+          let visitTime = calcVisitTime(data[i].clients[j].startTime, data[i].clients[j].endTime);
+          addVisitTime(specialistName, visitTime);
+          j = data[i].clients.length;
+        }
+      }
+      i = data.length;
     }
-  });
+  }
 
-  let result2 = data.find((item, index) => {
-    if(item.specialist === specialistName) {
-      data[index].clients = specialistClients;
-      return true;
-    }
-  });
   window.localStorage.setItem("clients", JSON.stringify(data));
-  loadData(specialistName);
+}
+
+function markClientAsInService(specialistName) {
+  let data = JSON.parse(window.localStorage.getItem("clients"));
+
+  for(let i = 0; i < data.length; i++) {
+    if(data[i].specialist === specialistName) {
+      for(let j = 0; j < data[i].clients.length; j++) {
+        if(data[i].clients[j].status === "in service") {
+          j = data[i].clients.length;
+        } else if (data[i].clients[j].status === "waiting") {
+          data[i].clients[j].status = "in service";
+          j = data[i].clients.length;
+        }
+      }
+      i = data.length;
+    }
+  }
+
+  window.localStorage.setItem("clients", JSON.stringify(data));
 }
 
 function renderSpecialistClients(specialistName, specialistClients) {
@@ -69,7 +83,9 @@ function renderSpecialistClients(specialistName, specialistClients) {
     let clientButton = document.createElement("button");
     clientButton.textContent = "Served";
     clientButton.addEventListener("click", () => {
-      serveClient(specialistName, client.number);
+      markClientAsServed(specialistName, client.number);
+      markClientAsInService(specialistName);
+      loadData(specialistName);
     });
     clientNumberDiv.appendChild(clientNumberPara);
     clientNameDiv.appendChild(clientNamePara);
@@ -83,7 +99,7 @@ function renderSpecialistClients(specialistName, specialistClients) {
 }
 
 function loadData(specialist) {
-  if(window.localStorage.getItem("clients") === null) {
+  if (window.localStorage.getItem("clients") === null) {
     return;
   }
   let data = JSON.parse(window.localStorage.getItem("clients"));
@@ -91,7 +107,7 @@ function loadData(specialist) {
     return item.specialist === specialist;
   }).clients;
   let waitingClients = specialistClients.filter(client => {
-    if(client.status === "waiting") {
+    if (client.status === "waiting" || client.status === "in service") {
       return client;
     }
   });
@@ -99,5 +115,5 @@ function loadData(specialist) {
 }
 
 specialistSelect.addEventListener("change", () => {
-  specialistSelect.value === "" ? null : loadData(specialistSelect.value); 
+  specialistSelect.value === "" ? null : loadData(specialistSelect.value);
 });

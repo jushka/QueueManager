@@ -6,22 +6,25 @@
         "number": 1,
         "name": "John",
         "status": "served",
-        "startTime": "1568824340433",
-        "endTime": "0"
+        "startTime": 1568824340433,
+        "endTime": 1568824431760,
+        "expectedEndTime": 1568824360433
       },
       {
         "number": 2,
         "name": "Paul",
         "status": "in service",
-        "startTime": "1568824340433",
-        "endTime": "1568824431760"
+        "startTime": 1568824340433,
+        "endTime": 0,
+        "expectedEndTime": 1568824360433
       },
       {
         "number": 8,
         "name": "Bill",
         "status": "waiting",
-        "startTime": "1568824340433",
-        "endTime": "0"
+        "startTime": 1568824340433,
+        "endTime": 0,
+        "expectedEndTime": 1568824360433
       }
     ]
   },
@@ -33,15 +36,17 @@
         "number": 3,
         "name": "Bob",
         "status": "cancelled",
-        "startTime": "1568824340433",
-        "endTime": "0"
+        "startTime": 1568824340433,
+        "endTime": 0,
+        "expectedEndTime": 1568824360433
       },
       {
         "number": 5,
         "name": "Dick",
         "status": "in service",
-        "startTime": "1568824340433",
-        "endTime": "0"
+        "startTime": 1568824340433,
+        "endTime": 0,
+        "expectedEndTime": 1568824360433
       }
     ]
   },
@@ -53,29 +58,33 @@
         "number": 4,
         "name": "Anna",
         "status": "in service",
-        "startTime": "1568824340433",
-        "endTime": "0"
+        "startTime": 1568824340433,
+        "endTime": 0,
+        "expectedEndTime": 1568824360433
       },
       {
         "number": 6,
         "name": "Leonardo",
         "status": "waiting",
-        "startTime": "1568824340433",
-        "endTime": "0"
+        "startTime": 1568824340433,
+        "endTime": 0,
+        "expectedEndTime": 1568824360433
       },
       {
         "number": 7,
         "name": "Brad",
         "status": "waiting",
-        "startTime": "1568824340433",
-        "endTime": "0"
+        "startTime": 1568824340433,
+        "endTime": 0,
+        "expectedEndTime": 1568824360433
       },
       {
         "number": 9,
         "name": "Selma",
         "status": "waiting",
-        "startTime": "1568824340433",
-        "endTime": "0"
+        "startTime": 1568824340433,
+        "endTime": 0,
+        "expectedEndTime": 1568824360433
       }
     ]
   }

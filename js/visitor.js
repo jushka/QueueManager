@@ -46,23 +46,29 @@ function showRemainingTime(startTime, specialist, status) {
 timeLeftForm.addEventListener("submit", (event) => {
   event.preventDefault();
   clearInterval(showRemainingTimeID);
+  if(window.localStorage.getItem("clients") === null) {
+    timeLeftText.textContent = "Oops! Client not found";
+    return;
+  }
   let number = Number(clientNumber.value);
   let data = JSON.parse(window.localStorage.getItem("clients"));
   let found = false;
   let startTime, specialist, status;
   
-  data.forEach(item => {
-    item.clients.forEach(client => {
-      if(client.number === number) {
+  for(let i = 0; i < data.length; i++) {
+    for(let j = 0; j < data[i].clients.length; j++) {
+      if(data[i].clients[j].number === number) {
         found = true;
-        startTime = client.startTime;
-        specialist = item.specialist;
-        status = client.status;
-        return;
+        startTime = data[i].clients[j].startTime;
+        specialist = data[i].specialist;
+        status = data[i].clients[j].status;
+        j = data[i].clients.length;
       }
-    });
-    if(found) {return};
-  });
+    }
+    if(found) {
+      i = data.length;
+    };
+  }
 
   if(!found) {
     timeLeftText.textContent = "Oops! Client not found";
@@ -72,16 +78,20 @@ timeLeftForm.addEventListener("submit", (event) => {
     showRemainingTimeID = setInterval(() => {
       data = JSON.parse(window.localStorage.getItem("clients"));
       found = false;
-      data.forEach(item => {
-        item.clients.forEach(client => {
-          if(client.number === number) {
+
+      for(let i = 0; i < data.length; i++) {
+        for(let j = 0; j < data[i].clients.length; j++) {
+          if(data[i].clients[j].number === number) {
             found = true;
-            status = client.status;
-            return;
+            status = data[i].clients[j].status;
+            j = data[i].clients.length;
           }
-        });
-        if(found) {return};
-      });
+        }
+        if(found) {
+          i = data.length;
+        };
+      }
+
       showRemainingTime(startTime, specialist, status);
     }, 5000);
   }

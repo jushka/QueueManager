@@ -24,50 +24,63 @@ function saveExampleData() {
 }
 
 function addNewClient() {
-  if(window.localStorage.getItem("clients") === null) {
-    let blueprint = [
-      {
-      specialist: "Investment",
-      clients: []
-      },
-      {
-      specialist: "Credit",
-      clients: []
-      },
-      {
-      specialist: "Pension",
-      clients: []
-      },
-    ];
-    window.localStorage.setItem("clients", JSON.stringify(blueprint));
-  }
-  let specialist = newClientSpecialist.value;
-  let name = newClientName.value;
   let data = JSON.parse(window.localStorage.getItem("clients"));
-  let specialistClients = data.find(item => {
-    return item.specialist === specialist;
-  }).clients;
+  let specialist = newClientSpecialist.value;
+  let index;
+  
+  // set client number
   if(window.localStorage.getItem("nextClientNumber") === null) {
     window.localStorage.setItem("nextClientNumber", "1");
   }
   let number = Number(window.localStorage.getItem("nextClientNumber"));
   window.localStorage.setItem("nextClientNumber", (number + 1).toString());
+
+  // set client name
+  let name = newClientName.value;
+
+  // set client status
+  let status = "in service";
+  for(let i = 0; i < data.length; i++) {
+    if(data[i].specialist === specialist) {
+      index = i;
+      for(let j = 0; j < data[i].clients.length; j++) {
+        if(data[i].clients[j].status === "in service") {
+          status = "waiting";
+          j = data[i].clients.length;
+        }
+      }
+      i = data.length;
+    }
+  }
+
+  // set client startTime
   let d = new Date();
   let startTime = d.getTime();
+  
+  // create new client
   let newClient = {
     number: number,
     name: name,
-    status: "waiting",
+    status: status,
     startTime: startTime,
     endTime: 0
   };
-  specialistClients.push(newClient);
-  let updateResult = data.find((item, index) => {
-    if(item.specialist === specialist) {
-      data[index].clients = specialistClients;
-      return true;
-    }
-  });
+
+  // push new client to client array
+  data[index].clients.push(newClient);
+  
+  // let specialistClients = data.find(item => {
+  //   return item.specialist === specialist;
+  // }).clients;
+
+  // specialistClients.push(newClient);
+  // let updateResult = data.find((item, index) => {
+  //   if(item.specialist === specialist) {
+  //     data[index].clients = specialistClients;
+  //     return true;
+  //   }
+  // });
+
   window.localStorage.setItem("clients", JSON.stringify(data));
 }
 
@@ -79,3 +92,21 @@ newClientForm.addEventListener("submit", (event) => {
   newClientName.value = "";
   newClientName.focus();
 });
+
+if(window.localStorage.getItem("clients") === null) {
+  let blueprint = [
+    {
+    specialist: "Investment",
+    clients: []
+    },
+    {
+    specialist: "Credit",
+    clients: []
+    },
+    {
+    specialist: "Pension",
+    clients: []
+    },
+  ];
+  window.localStorage.setItem("clients", JSON.stringify(blueprint));
+}
