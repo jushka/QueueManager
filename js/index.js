@@ -22,9 +22,12 @@ function calcRemainingTime(startTime, specialist) {
 
 function renderSpecialistClients(specialistName, specialistClients) {
   let waitingClients = specialistClients.filter(client => {
-    return client.status === "waiting";
+    if(client.status === "waiting" || client.status === "in service") {
+      return client;
+    }
   });
   let specialistDiv = document.createElement("div");
+  specialistDiv.className = "specialist";
   let specialistTitle = document.createElement("h2");
   specialistTitle.textContent = specialistName;
   specialistDiv.appendChild(specialistTitle);
@@ -43,16 +46,22 @@ function renderSpecialistClients(specialistName, specialistClients) {
     let clientNamePara = document.createElement("p");
     clientNamePara.textContent = client.name;
     let clientTimePara = document.createElement("p");
-    let remainingTime = Math.round(calcRemainingTime(client.startTime, specialistName));
-    if(remainingTime < 0) {
-      clientTimePara.textContent = "You should be served soon :)"
-    } else if(remainingTime > 60) {
-      let min = Math.round(remainingTime / 60);
-      let sec = remainingTime % 60;
-      clientTimePara.textContent = `Time remaining: ${min} min(s) and ${sec} secs`;
+
+    if(client.status === "in service") {
+      clientTimePara.textContent = "Client is being served right now";
     } else {
-      clientTimePara.textContent = `Time remaining: ${remainingTime} seconds`;
+      let remainingTime = Math.round(calcRemainingTime(client.startTime, specialistName));
+      if(remainingTime < 0) {
+        clientTimePara.textContent = "You should be served soon :)"
+      } else if(remainingTime > 60) {
+        let min = Math.round(remainingTime / 60);
+        let sec = remainingTime % 60;
+        clientTimePara.textContent = `Time remaining: ${min} min(s) and ${sec} secs`;
+      } else {
+        clientTimePara.textContent = `Time remaining: ${remainingTime} seconds`;
+      }
     }
+
     clientNumberDiv.appendChild(clientNumberPara);
     clientNameDiv.appendChild(clientNamePara);
     clientTimeDiv.appendChild(clientTimePara);
@@ -73,4 +82,13 @@ function loadData() {
 
 if(window.localStorage.getItem("clients")) {
   loadData();
+  setInterval(() => {
+    if(document.querySelectorAll(".specialist")) {
+      let items = document.querySelectorAll(".specialist");
+      items.forEach(item => {
+        specialistsDiv.removeChild(item);
+      });
+    }
+    loadData();
+  }, 5000);
 }

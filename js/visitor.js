@@ -22,16 +22,24 @@ function calcRemainingTime(startTime, specialist) {
   return averageTime - timePassed;
 }
 
-function showRemainingTime(startTime, specialist) {
-  let remainingTime = Math.round(calcRemainingTime(startTime, specialist));
-  if(remainingTime < 0) {
-    timeLeftText.textContent = "You should be served soon :)"
-  } else if(remainingTime > 60) {
-    let min = Math.round(remainingTime / 60);
-    let sec = remainingTime % 60;
-    timeLeftText.textContent = `Time remaining: ${min} min(s) and ${sec} secs`;
+function showRemainingTime(startTime, specialist, status) {
+  if(status === "in service") {
+    timeLeftText.textContent = "You are being served right now";
+  } else if(status === "served") {
+    timeLeftText.textContent = "You have been served";
+  } else if(status === "cancelled") {
+    timeLeftText.textContent = "Your visit has been cancelled";
   } else {
-    timeLeftText.textContent = `Time remaining: ${remainingTime} seconds`;
+    let remainingTime = Math.round(calcRemainingTime(startTime, specialist));
+    if(remainingTime < 0) {
+      timeLeftText.textContent = "You should be served soon :)"
+    } else if(remainingTime > 60) {
+      let min = Math.round(remainingTime / 60);
+      let sec = remainingTime % 60;
+      timeLeftText.textContent = `Time remaining: ${min} min(s) and ${sec} secs`;
+    } else {
+      timeLeftText.textContent = `Time remaining: ${remainingTime} seconds`;
+    }
   }
 }
 
@@ -41,7 +49,7 @@ timeLeftForm.addEventListener("submit", (event) => {
   let number = Number(clientNumber.value);
   let data = JSON.parse(window.localStorage.getItem("clients"));
   let found = false;
-  let startTime, specialist;
+  let startTime, specialist, status;
   
   data.forEach(item => {
     item.clients.forEach(client => {
@@ -49,6 +57,7 @@ timeLeftForm.addEventListener("submit", (event) => {
         found = true;
         startTime = client.startTime;
         specialist = item.specialist;
+        status = client.status;
         return;
       }
     });
@@ -56,12 +65,24 @@ timeLeftForm.addEventListener("submit", (event) => {
   });
 
   if(!found) {
-    timeLeftText.textContent = "Client not found";
+    timeLeftText.textContent = "Oops! Client not found";
     return;
-  } else {
-    showRemainingTime(startTime, specialist);
+  }  else {
+    showRemainingTime(startTime, specialist, status);
     showRemainingTimeID = setInterval(() => {
-      showRemainingTime(startTime, specialist);
+      data = JSON.parse(window.localStorage.getItem("clients"));
+      found = false;
+      data.forEach(item => {
+        item.clients.forEach(client => {
+          if(client.number === number) {
+            found = true;
+            status = client.status;
+            return;
+          }
+        });
+        if(found) {return};
+      });
+      showRemainingTime(startTime, specialist, status);
     }, 5000);
   }
 });

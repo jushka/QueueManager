@@ -5,14 +5,14 @@
       {
         "number": 1,
         "name": "John",
-        "status": "waiting",
+        "status": "served",
         "startTime": "1568824340433",
         "endTime": "0"
       },
       {
         "number": 2,
         "name": "Paul",
-        "status": "served",
+        "status": "in service",
         "startTime": "1568824340433",
         "endTime": "1568824431760"
       },
@@ -39,7 +39,7 @@
       {
         "number": 5,
         "name": "Dick",
-        "status": "waiting",
+        "status": "in service",
         "startTime": "1568824340433",
         "endTime": "0"
       }
@@ -52,7 +52,7 @@
       {
         "number": 4,
         "name": "Anna",
-        "status": "waiting",
+        "status": "in service",
         "startTime": "1568824340433",
         "endTime": "0"
       },

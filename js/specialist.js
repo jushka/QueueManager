@@ -91,7 +91,9 @@ function loadData(specialist) {
     return item.specialist === specialist;
   }).clients;
   let waitingClients = specialistClients.filter(client => {
-    return client.status === "waiting";
+    if(client.status === "waiting") {
+      return client;
+    }
   });
   renderSpecialistClients(specialist, waitingClients);
 }

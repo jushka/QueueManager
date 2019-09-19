@@ -1,15 +1,15 @@
 const timesBlueprint = [
   {
   specialist: "Investment",
-  times: [10]
+  times: [20, 30, 40]
   },
   {
   specialist: "Credit",
-  times: [15]
+  times: [40, 30, 20]
   },
   {
   specialist: "Pension",
-  times: [20]
+  times: [30, 20, 40]
   },
 ];
 
