@@ -19,7 +19,7 @@ function markClientAsServed(specialistName, clientNumber) {
     if (data[i].specialist === specialistName) {
       for (let j = 0; j < data[i].clients.length; j++) {
         if (data[i].clients[j].number === clientNumber) {
-          if(data[i].clients[j].status === "waiting") {
+          if(data[i].clients[j].status === "waiting" || data[i].clients[j].status === "in service") {
             data[i].clients[j].status = "served";
             let d = new Date();
             data[i].clients[j].endTime = d.getTime();

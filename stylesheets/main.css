@@ -35,3 +35,13 @@ body {
   background-color: #f9375e;
   border-color: #f9375e;
 }
+
+.yellow-btn {
+  background-color: #ffbc00;
+  border-color: #ffbc00;
+}
+
+.yellow-btn:hover {
+  background-color: #d9a000;
+  border-color: #d9a000;
+}
