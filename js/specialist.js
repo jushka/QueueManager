@@ -19,11 +19,13 @@ function markClientAsServed(specialistName, clientNumber) {
     if (data[i].specialist === specialistName) {
       for (let j = 0; j < data[i].clients.length; j++) {
         if (data[i].clients[j].number === clientNumber) {
-          data[i].clients[j].status = "served";
-          let d = new Date();
-          data[i].clients[j].endTime = d.getTime();
-          let visitTime = data[i].clients[j].endTime - data[i].clients[j].startTime;
-          addVisitTime(specialistName, visitTime);
+          if(data[i].clients[j].status === "waiting") {
+            data[i].clients[j].status = "served";
+            let d = new Date();
+            data[i].clients[j].endTime = d.getTime();
+            let visitTime = data[i].clients[j].endTime - data[i].clients[j].startTime;
+            addVisitTime(specialistName, visitTime);
+          }
           j = data[i].clients.length;
         }
       }

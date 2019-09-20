@@ -25,3 +25,13 @@ body {
   background-color: #4f5cf2;
   border-color: #4f5cf2;
 }
+
+.red-btn {
+  background-color: #fa5c7c;
+  border-color: #fa5c7c;
+}
+
+.red-btn:hover {
+  background-color: #f9375e;
+  border-color: #f9375e;
+}
