@@ -115,11 +115,20 @@ function addNewClient() {
   showMessage("alert-success", "<strong>Success!</strong> New client has been added!");
 }
 
+function isNameValid() {
+  let regexp = /^[A-Z][a-z]*[a-z]$/;
+  return regexp.test(newClientName.value);
+}
+
 saveExampleDataBtn.addEventListener("click", saveExampleData);
 
 newClientForm.addEventListener("submit", (event) => {
   event.preventDefault();
-  addNewClient();
-  newClientName.value = "";
+  if(isNameValid()) {
+    addNewClient();
+    newClientName.value = "";
+  } else {
+    showMessage("alert-danger", "<strong>Error!</strong> Entered name is invalid!");
+  }
   newClientName.focus();
 });
